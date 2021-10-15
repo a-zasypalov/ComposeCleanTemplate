@@ -13,18 +13,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.gaoyun.cct.domain.User
 import com.gaoyun.cct.feature_user_details.USER_DETAILS_SCREEN_ROUTE
 import com.gaoyun.cct.feature_user_details.UserDetailsScreen
 import com.gaoyun.feature_home_screen.R
 import com.gaoyun.feature_home_screen.repositories.RepositoriesScreen
-import com.gaoyun.feature_home_screen.users.UsersScreen
 import com.gaoyun.feature_home_screen.users.UsersScreenDestination
 
 sealed class HomeScreenTabs(val route: String, @StringRes val resourceId: Int, val icon: ImageVector) {
