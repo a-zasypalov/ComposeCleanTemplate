@@ -1,5 +1,6 @@
 package com.gaoyun.cct.di
 
+import com.gaoyun.cct.data.network.RepositoryRoutes
 import com.gaoyun.cct.data.network.UserRoutes
 import dagger.Module
 import dagger.Provides
@@ -20,6 +21,10 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideUserRoutes(httpClient: HttpClient): UserRoutes = UserRoutes(httpClient)
+
+    @Singleton
+    @Provides
+    fun provideRepositoriesRoutes(httpClient: HttpClient): RepositoryRoutes = RepositoryRoutes(httpClient)
 
     @Singleton
     @Provides
