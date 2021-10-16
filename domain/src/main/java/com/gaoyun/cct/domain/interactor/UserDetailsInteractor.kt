@@ -3,7 +3,7 @@ package com.gaoyun.cct.domain.interactor
 import com.gaoyun.cct.domain.repository.UserRepository
 import javax.inject.Inject
 
-class UserDetailInteractor @Inject constructor(
+class UserDetailsInteractor @Inject constructor(
     private val repository: UserRepository
 ) {
 

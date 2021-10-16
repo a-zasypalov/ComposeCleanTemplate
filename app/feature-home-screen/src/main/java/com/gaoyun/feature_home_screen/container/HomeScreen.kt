@@ -13,19 +13,21 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.gaoyun.cct.feature_user_details.USER_DETAILS_SCREEN_ROUTE
-import com.gaoyun.cct.feature_user_details.UserDetailsScreen
+import androidx.navigation.navArgument
+import com.gaoyun.cct.common.NavigationKeys
+import com.gaoyun.cct.feature_user_details.UserDetailsDestination
 import com.gaoyun.feature_home_screen.R
 import com.gaoyun.feature_home_screen.repositories.RepositoriesScreen
 import com.gaoyun.feature_home_screen.users.UsersScreenDestination
 
 sealed class HomeScreenTabs(val route: String, @StringRes val resourceId: Int, val icon: ImageVector) {
-    object Users : HomeScreenTabs("users", R.string.users, Icons.Filled.Person)
-    object Repositories : HomeScreenTabs("repositories", R.string.repositories, Icons.Filled.List)
+    object Users : HomeScreenTabs(NavigationKeys.Route.USERS_LIST, R.string.users, Icons.Filled.Person)
+    object Repositories : HomeScreenTabs(NavigationKeys.Route.REPOS_LIST, R.string.repositories, Icons.Filled.List)
 }
 
 val homeTabs = listOf(
@@ -67,16 +69,23 @@ fun HomeScreen() {
         }
     ) { innerPadding ->
         NavHost(navController, startDestination = HomeScreenTabs.Users.route, Modifier.padding(innerPadding)) {
+            //Tabs
             composable(HomeScreenTabs.Users.route) {
                 UsersScreenDestination(navController)
-            }
-            composable(USER_DETAILS_SCREEN_ROUTE) {
-                UserDetailsScreen()
             }
             composable(HomeScreenTabs.Repositories.route) {
                 RepositoriesScreen(navController)
             }
 
+            //Other destinations
+            composable(
+                route = NavigationKeys.Route.USER_DETAILS,
+                arguments = listOf(navArgument(NavigationKeys.Arg.USER_ID) {
+                    type = NavType.StringType
+                })
+            ) {
+                UserDetailsDestination(navController)
+            }
         }
     }
 }

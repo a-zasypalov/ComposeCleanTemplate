@@ -1,5 +1,6 @@
 package com.gaoyun.cct.data.network
 
+import com.gaoyun.cct.data.model.UserDetailsResponse
 import com.gaoyun.cct.data.model.UserResponse
 import com.gaoyun.cct.data.network.ApiUtils.defaultHeaders
 import com.gaoyun.cct.data.utils.requestAndCatch
@@ -19,9 +20,9 @@ class UserRoutes @Inject constructor(
         }
     }
 
-    suspend fun getUser(login: String): UserResponse {
+    suspend fun getUser(login: String): UserDetailsResponse {
         return apiClient.requestAndCatch {
-            get("${ApiUtils.ENDPOINT_URL}/user/$login") {
+            get("${ApiUtils.ENDPOINT_URL}/users/$login") {
                 defaultHeaders()
             }
         }

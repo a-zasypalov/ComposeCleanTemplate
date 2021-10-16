@@ -3,7 +3,7 @@ package com.gaoyun.feature_home_screen.users
 import com.gaoyun.cct.common.ViewEvent
 import com.gaoyun.cct.common.ViewSideEffect
 import com.gaoyun.cct.common.ViewState
-import com.gaoyun.cct.domain.User
+import com.gaoyun.cct.domain.model.User
 
 class UsersScreenContract {
     sealed class Event : ViewEvent {

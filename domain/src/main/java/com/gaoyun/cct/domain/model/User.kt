@@ -1,4 +1,4 @@
-package com.gaoyun.cct.domain
+package com.gaoyun.cct.domain.model
 
 data class User(
     val id: Long,

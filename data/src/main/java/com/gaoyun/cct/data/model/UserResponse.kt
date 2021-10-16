@@ -1,6 +1,6 @@
 package com.gaoyun.cct.data.model
 
-import com.gaoyun.cct.domain.User
+import com.gaoyun.cct.domain.model.User
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

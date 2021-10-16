@@ -13,15 +13,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.Navigator
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.gaoyun.cct.common.LAUNCH_LISTEN_FOR_EFFECTS
-import com.gaoyun.cct.domain.User
-import com.gaoyun.cct.feature_user_details.USER_DETAILS_SCREEN_ROUTE
+import com.gaoyun.cct.common.NavigationKeys
+import com.gaoyun.cct.domain.model.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -31,13 +29,14 @@ import kotlinx.coroutines.flow.onEach
 fun UsersScreenDestination(navHostController: NavHostController) {
     val viewModel: UsersViewModel = hiltViewModel()
     val state = viewModel.viewState.value
+
     UsersScreen(
         state = state,
         effectFlow = viewModel.effect,
         onEventSent = { event -> viewModel.setEvent(event) },
         onNavigationRequested = { navigationEffect ->
             if (navigationEffect is UsersScreenContract.Effect.Navigation.ToUserDetails) {
-                navHostController.navigate(USER_DETAILS_SCREEN_ROUTE)
+                navHostController.navigate("${NavigationKeys.Route.USERS_LIST}/${navigationEffect.userName}")
             }
         }
     )
