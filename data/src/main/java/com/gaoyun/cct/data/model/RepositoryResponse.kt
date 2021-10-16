@@ -3,7 +3,9 @@ package com.gaoyun.cct.data.model
 import com.gaoyun.cct.domain.model.Repository
 import com.gaoyun.cct.domain.model.User
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RepositoryResponse(
     val id: Long? = null,
 

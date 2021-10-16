@@ -22,7 +22,7 @@ import androidx.navigation.navArgument
 import com.gaoyun.cct.common.NavigationKeys
 import com.gaoyun.cct.feature_user_details.UserDetailsDestination
 import com.gaoyun.feature_home_screen.R
-import com.gaoyun.feature_home_screen.repositories.RepositoriesScreen
+import com.gaoyun.feature_home_screen.repositories.RepositoriesScreenDestination
 import com.gaoyun.feature_home_screen.users.UsersScreenDestination
 
 sealed class HomeScreenTabs(val route: String, @StringRes val resourceId: Int, val icon: ImageVector) {
@@ -74,7 +74,7 @@ fun HomeScreen() {
                 UsersScreenDestination(navController)
             }
             composable(HomeScreenTabs.Repositories.route) {
-                RepositoriesScreen(navController)
+                RepositoriesScreenDestination(navController)
             }
 
             //Other destinations
