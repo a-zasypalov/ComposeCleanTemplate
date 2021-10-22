@@ -6,6 +6,10 @@ import com.gaoyun.cct.common.BaseViewModel
 import com.gaoyun.cct.common.NavigationKeys
 import com.gaoyun.cct.domain.interactor.UserDetailsInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,14 +24,12 @@ class UserDetailsViewModel @Inject constructor(
             val userLogin = stateHandle.get<String>(NavigationKeys.Arg.USER_ID)
                 ?: throw IllegalStateException("No userLogin was passed to destination.")
 
-            try {
-                val response = userDetailsInteractor.getUser(userLogin)
-                setState {
-                    copy(userDetails = response, isloading = false)
+            userDetailsInteractor.getUser(userLogin)
+                .flowOn(Dispatchers.IO)
+                .catch { exception -> exception.printStackTrace() }
+                .collect { response ->
+                    setState { copy(userDetails = response, isloading = false) }
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
         }
     }
 

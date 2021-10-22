@@ -7,6 +7,10 @@ import com.gaoyun.cct.common.NavigationKeys
 import com.gaoyun.cct.domain.interactor.RepositoryDetailsInteractor
 import com.gaoyun.cct.domain.interactor.UserDetailsInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,14 +27,12 @@ class RepositoryDetailsViewModel @Inject constructor(
             val repositoryId = stateHandle.get<String>(NavigationKeys.Arg.REPO_ID)
                 ?: throw IllegalStateException("No repoName was passed to destination.")
 
-            try {
-                val response = userDetailsInteractor.getRepository(userId, repositoryId)
-                setState {
-                    copy(repositoryDetails = response, isloading = false)
+            userDetailsInteractor.getRepository(userId, repositoryId)
+                .flowOn(Dispatchers.IO)
+                .catch { exception -> exception.printStackTrace() }
+                .collect { response ->
+                    setState { copy(repositoryDetails = response, isloading = false) }
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
         }
     }
 

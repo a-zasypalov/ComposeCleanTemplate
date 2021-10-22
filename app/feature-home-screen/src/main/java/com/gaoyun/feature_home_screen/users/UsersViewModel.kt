@@ -4,6 +4,10 @@ import androidx.lifecycle.viewModelScope
 import com.gaoyun.cct.common.BaseViewModel
 import com.gaoyun.cct.domain.interactor.UserListInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,15 +30,11 @@ class UsersViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getUsersPage() {
-        try {
-            val users = userListInteractor.getUsersPage(50, 0)
-            setState {
-                copy(users = users, isLoading = false)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+    private suspend fun getUsersPage() = userListInteractor.getUsersPage(50, 0)
+        .flowOn(Dispatchers.IO)
+        .catch { exception -> exception.printStackTrace() }
+        .collect { users ->
+            setState { copy(users = users, isLoading = false) }
         }
-    }
 
 }

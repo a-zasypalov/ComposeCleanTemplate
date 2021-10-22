@@ -4,6 +4,10 @@ import androidx.lifecycle.viewModelScope
 import com.gaoyun.cct.common.BaseViewModel
 import com.gaoyun.cct.domain.interactor.RepositoriesListInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,16 +30,10 @@ class RepositoriesListViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getRepositoriesPage() {
-        try {
-            val repositories = repositoriesListInteractor.getRepositoriesPage(0)
-            setState {
-                copy(repositories = repositories, isLoading = false)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+    private suspend fun getRepositoriesPage() = repositoriesListInteractor.getRepositoriesPage(0)
+        .flowOn(Dispatchers.IO)
+        .catch { exception -> exception.printStackTrace() }
+        .collect { repositories ->
+            setState { copy(repositories = repositories, isLoading = false) }
         }
-    }
-
-
 }
