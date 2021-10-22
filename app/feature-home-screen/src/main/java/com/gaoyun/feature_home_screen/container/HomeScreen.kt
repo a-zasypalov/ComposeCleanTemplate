@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
@@ -24,10 +25,11 @@ import com.gaoyun.cct.feature_user_details.UserDetailsDestination
 import com.gaoyun.feature_home_screen.R
 import com.gaoyun.feature_home_screen.repositories.RepositoriesScreenDestination
 import com.gaoyun.feature_home_screen.users.UsersScreenDestination
+import com.gaoyun.feature_repository_details.RepositoryDetailsDestination
 
 sealed class HomeScreenTabs(val route: String, @StringRes val resourceId: Int, val icon: ImageVector) {
-    object Users : HomeScreenTabs(NavigationKeys.Route.USERS_LIST, R.string.users, Icons.Filled.Person)
-    object Repositories : HomeScreenTabs(NavigationKeys.Route.REPOS_LIST, R.string.repositories, Icons.Filled.List)
+    object Users : HomeScreenTabs(NavigationKeys.RouteLocal.USERS_LIST, R.string.users, Icons.Filled.Person)
+    object Repositories : HomeScreenTabs(NavigationKeys.RouteLocal.REPOS_LIST, R.string.repositories, Icons.Filled.List)
 }
 
 val homeTabs = listOf(
@@ -36,9 +38,11 @@ val homeTabs = listOf(
 )
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(globalNavController: NavController) {
     val navController = rememberNavController()
+    val scaffoldState = rememberScaffoldState()
     Scaffold(
+        scaffoldState = scaffoldState,
         bottomBar = {
             BottomNavigation {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -71,15 +75,15 @@ fun HomeScreen() {
         NavHost(navController, startDestination = HomeScreenTabs.Users.route, Modifier.padding(innerPadding)) {
             //Tabs
             composable(HomeScreenTabs.Users.route) {
-                UsersScreenDestination(navController)
+                UsersScreenDestination(navController, globalNavController)
             }
             composable(HomeScreenTabs.Repositories.route) {
-                RepositoriesScreenDestination(navController)
+                RepositoriesScreenDestination(navController, globalNavController)
             }
 
             //Other destinations
             composable(
-                route = NavigationKeys.Route.USER_DETAILS,
+                route = NavigationKeys.RouteLocal.USER_DETAILS,
                 arguments = listOf(navArgument(NavigationKeys.Arg.USER_ID) {
                     type = NavType.StringType
                 })

@@ -14,19 +14,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.gaoyun.cct.common.LAUNCH_LISTEN_FOR_EFFECTS
 import com.gaoyun.cct.common.NavigationKeys
 import com.gaoyun.cct.domain.model.Repository
-import com.gaoyun.cct.domain.model.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 
 @Composable
-fun RepositoriesScreenDestination(navHostController: NavHostController) {
+fun RepositoriesScreenDestination(navHostController: NavHostController, globalNavController: NavController) {
     val viewModel: RepositoriesListViewModel = hiltViewModel()
     val state = viewModel.viewState.value
 
@@ -36,7 +36,7 @@ fun RepositoriesScreenDestination(navHostController: NavHostController) {
         onEventSent = { event -> viewModel.setEvent(event) },
         onNavigationRequested = { navigationEffect ->
             if (navigationEffect is RepositoriesScreenContract.Effect.Navigation.ToRepositoryDetails) {
-                navHostController.navigate("${NavigationKeys.Route.USERS_LIST}/${navigationEffect.owner}")
+                globalNavController.navigate("${NavigationKeys.RouteGlobal.REPOS_LIST_GLOBAL}/${navigationEffect.owner}/${navigationEffect.repoName}")
             }
         }
     )

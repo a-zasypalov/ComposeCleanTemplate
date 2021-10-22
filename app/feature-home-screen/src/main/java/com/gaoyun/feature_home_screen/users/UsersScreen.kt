@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
@@ -26,7 +27,7 @@ import kotlinx.coroutines.flow.onEach
 
 
 @Composable
-fun UsersScreenDestination(navHostController: NavHostController) {
+fun UsersScreenDestination(navHostController: NavHostController, globalNavController: NavController) {
     val viewModel: UsersViewModel = hiltViewModel()
     val state = viewModel.viewState.value
 
@@ -36,7 +37,7 @@ fun UsersScreenDestination(navHostController: NavHostController) {
         onEventSent = { event -> viewModel.setEvent(event) },
         onNavigationRequested = { navigationEffect ->
             if (navigationEffect is UsersScreenContract.Effect.Navigation.ToUserDetails) {
-                navHostController.navigate("${NavigationKeys.Route.USERS_LIST}/${navigationEffect.userName}")
+                navHostController.navigate("${NavigationKeys.RouteLocal.USERS_LIST}/${navigationEffect.userName}")
             }
         }
     )
