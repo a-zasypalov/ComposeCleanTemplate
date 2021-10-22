@@ -13,4 +13,7 @@ class RepositoriesRepositoryImpl @Inject constructor(
     override suspend fun getRepositoriesPage(since: Int): List<Repository> =
         repositoryRoutes.getRepositoriesPage(since).map { it.mapToRepository() }
 
+    override suspend fun getRepository(owner: String, name: String) =
+        repositoryRoutes.getRepository(owner, name).mapToRepository()
+
 }

@@ -4,4 +4,5 @@ import com.gaoyun.cct.domain.model.Repository
 
 interface RepositoriesRepository {
     suspend fun getRepositoriesPage(since: Int): List<Repository>
+    suspend fun getRepository(owner: String, name: String): Repository
 }

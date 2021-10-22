@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.gaoyun.cct.common.LAUNCH_LISTEN_FOR_EFFECTS
+import com.gaoyun.cct.domain.model.Repository
 import com.gaoyun.cct.domain.model.UserDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -54,11 +55,11 @@ fun RepositoryDetailsScreen(
 }
 
 @Composable
-fun RepositoryDetails(userDetails: UserDetails) {
+fun RepositoryDetails(repo: Repository) {
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
         Column {
-            Text("Repo name: ${userDetails.login}", fontSize = 28.sp)
-            Text("Author: ${userDetails.name}", fontSize = 28.sp)
+            Text("Repo name: ${repo.name}", fontSize = 28.sp)
+            Text("Author: ${repo.owner.login}", fontSize = 28.sp)
         }
     }
 }

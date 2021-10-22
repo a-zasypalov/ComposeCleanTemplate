@@ -21,4 +21,12 @@ class RepositoryRoutes @Inject constructor(
         }
     }
 
+    suspend fun getRepository(owner: String, name: String): RepositoryResponse {
+        return apiClient.requestAndCatch {
+            get("${ApiUtils.ENDPOINT_URL}/repos/$owner/$name") {
+                defaultHeaders()
+            }
+        }
+    }
+
 }
